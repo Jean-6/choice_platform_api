@@ -1,9 +1,6 @@
 package com.example.choice_platform_api.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Choice {
@@ -11,4 +8,6 @@ public class Choice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @OneToOne//(cascade = CascadeType.ALL)
+    private Project project;
 }
