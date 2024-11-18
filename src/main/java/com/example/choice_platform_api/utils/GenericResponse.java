@@ -1,20 +1,26 @@
 package com.example.choice_platform_api.utils;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class GenericResponse<T> {
 
-    private int status;
+    private HttpStatus status;
     private boolean isSuccess;
     private String message;
     private T data;
     private List<T> dataList;
+
+    public GenericResponse() {}
+
+    public GenericResponse(HttpStatus status,boolean isSuccess, String msg, T data) {
+        this.status = status;
+        this.isSuccess = isSuccess;
+        this.message = msg;
+        this.data = data;
+    }
 }
