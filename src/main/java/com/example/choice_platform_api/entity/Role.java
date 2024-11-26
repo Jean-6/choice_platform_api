@@ -1,21 +1,34 @@
 package com.example.choice_platform_api.entity;
 
 import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.example.choice_platform_api.entity.Privilege.*;
+
 
 @Getter
-public enum Role implements GrantedAuthority{
+@RequiredArgsConstructor
+public enum Role {
+    ADMIN(
+            Set.of(READ_PRIVILEGE,WRITE_PRIVILEGE,UPDATE_PRIVILEGE,DELETE_PRIVILEGE)
+    ),
+    USER(
+      Set.of(READ_PRIVILEGE)
+    );
+    private final Set<Privilege> privileges;
 
-    ROLE_USER("USER"),
-    ROLE_ADMIN("ADMIN");
-    //private String authority;
-    private String value;
+    public List<SimpleGrantedAuthority> getAuthorities(){
+        List<SimpleGrantedAuthority> authorities = getPrivileges()
+                .stream()
+                .map(privilege -> new SimpleGrantedAuthority(privilege.name()))
+                .collect(Collectors.toList());
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+        return authorities;
+    }
 
-    Role(String value) {
-        this.value = value;
-    }
-    @Override
-    public String getAuthority() {
-        return "";
-    }
 }
